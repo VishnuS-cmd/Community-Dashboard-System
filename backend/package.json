@@ -1,0 +1,10 @@
+{
+  "name": "community-dashboard-management-system-backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "mvn -q -DskipTests package",
+    "db:migrate": "java -jar target/community-dashboard-management-system-backend-1.0.0.jar --factory.task=migrate",
+    "db:seed": "java -jar target/community-dashboard-management-system-backend-1.0.0.jar --factory.task=seed"
+  }
+}

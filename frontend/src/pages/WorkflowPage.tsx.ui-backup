@@ -1,0 +1,86 @@
+import { useState } from 'react';
+import { apiRequest } from '../lib/api';
+
+interface WorkflowPageProps {
+  workflow: any;
+}
+
+export function WorkflowPage({ workflow }: WorkflowPageProps) {
+  const [selectedStep, setSelectedStep] = useState<string | null>(null);
+  const [message, setMessage] = useState('');
+
+  const steps = workflow.steps || [];
+
+  async function handleStepClick(step: string) {
+    setSelectedStep(step);
+    setMessage('');
+
+    try {
+      await apiRequest(`/domain/${workflow.name}`, {
+        method: 'POST',
+        body: JSON.stringify({
+          workflow: workflow.name,
+          step: step,
+          status: 'Completed'
+        })
+      });
+
+      setMessage(`${step} completed successfully.`);
+    } catch (error) {
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : 'Something went wrong.'
+      );
+    }
+  }
+
+  return (
+    <section>
+      <h2 className="mb-2 text-2xl font-semibold">
+        {workflow.label}
+      </h2>
+
+      <p className="mb-4 text-sm text-slate-600">
+        {workflow.description}
+      </p>
+
+      <div className="grid gap-3 md:grid-cols-4">
+        {steps.map((step: string, index: number) => (
+          <button
+            key={step}
+            type="button"
+            onClick={() => handleStepClick(step)}
+            className="theme-card p-4 text-left hover:shadow-md"
+          >
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white">
+              {index + 1}
+            </span>
+
+            <p className="mt-3 text-sm font-medium">
+              {step}
+            </p>
+          </button>
+        ))}
+      </div>
+
+      {selectedStep && (
+        <div className="mt-6 rounded border bg-slate-50 p-4">
+          <h3 className="text-lg font-semibold">
+            {selectedStep}
+          </h3>
+
+          <p className="mt-2 text-sm text-slate-600">
+            Selected workflow step: {selectedStep}
+          </p>
+
+          {message && (
+            <p className="mt-2 text-sm font-medium">
+              {message}
+            </p>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}

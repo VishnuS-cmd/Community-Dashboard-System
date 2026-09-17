@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: var(--theme-text);
+  background: var(--theme-background);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--theme-background);
+}
+
+.theme-root {
+  min-height: 100vh;
+  color: var(--theme-text);
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--theme-accent) 18%, transparent) 0, transparent 38%),
+    radial-gradient(circle at bottom left, color-mix(in srgb, var(--theme-primary) 12%, transparent) 0, transparent 42%),
+    linear-gradient(135deg, var(--theme-background) 0%, color-mix(in srgb, var(--theme-muted) 45%, white) 100%);
+}
+
+.theme-surface {
+  border-radius: var(--theme-radius);
+  background: var(--theme-surface);
+}
+
+.theme-card {
+  border-radius: var(--theme-radius);
+  border: 1px solid color-mix(in srgb, var(--theme-border) 70%, white);
+  background: color-mix(in srgb, var(--theme-surface) 96%, var(--theme-muted));
+  box-shadow: var(--theme-shadow);
+  padding: var(--theme-density);
+}
+
+.theme-link:hover {
+  background: color-mix(in srgb, var(--theme-muted) 64%, white);
+}
+
+.theme-command-center {
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--theme-primary) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in srgb, var(--theme-primary) 7%, transparent) 1px, transparent 1px),
+    var(--theme-background);
+  background-size: 32px 32px;
+}
+
+.theme-academic-studio,
+.theme-clinical-console,
+.theme-workflow-board,
+.theme-ledger-grid,
+.theme-field-ops {
+  background:
+    linear-gradient(135deg, var(--theme-background), color-mix(in srgb, var(--theme-muted) 58%, white)),
+    var(--theme-background);
+}
+
+.cards-flat .theme-card {
+  border-color: transparent;
+}
+
+.cards-elevated .theme-card {
+  border-color: color-mix(in srgb, var(--theme-border) 40%, white);
+}

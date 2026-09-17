@@ -1,0 +1,93 @@
+interface PaginationMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+interface PaginationProps {
+  meta: PaginationMeta;
+  onPageChange: (page: number) => void;
+}
+
+export function Pagination({ meta, onPageChange }: PaginationProps) {
+  const firstItem = meta.total === 0 ? 0 : (meta.page - 1) * meta.limit + 1;
+  const lastItem  = Math.min(meta.page * meta.limit, meta.total);
+
+  // Build compact page numbers
+  const pages: (number | '…')[] = [];
+  const total = meta.totalPages;
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) pages.push(i);
+  } else {
+    pages.push(1);
+    if (meta.page > 3) pages.push('…');
+    for (let i = Math.max(2, meta.page - 1); i <= Math.min(total - 1, meta.page + 1); i++) pages.push(i);
+    if (meta.page < total - 2) pages.push('…');
+    pages.push(total);
+  }
+
+  return (
+    <div className="mt-5 flex flex-col gap-3 border-t border-slate-100 pt-4 text-sm md:flex-row md:items-center md:justify-between">
+
+      {/* Item count */}
+      <span className="text-xs text-slate-400 font-medium">
+        {meta.total === 0 ? 'No records' : `Showing ${firstItem}–${lastItem} of ${meta.total} records`}
+      </span>
+
+      {/* Page controls */}
+      {total > 1 && (
+        <div className="flex items-center gap-1">
+          {/* Previous */}
+          <button
+            type="button"
+            className="h-8 w-8 rounded-lg border border-slate-200 text-slate-500 text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 hover:border-slate-300 transition-colors"
+            disabled={meta.page <= 1}
+            onClick={() => onPageChange(meta.page - 1)}
+            aria-label="Previous page"
+          >
+            ‹
+          </button>
+
+          {/* Page numbers */}
+          {pages.map((p, i) =>
+            p === '…' ? (
+              <span key={`ellipsis-${i}`} className="h-8 w-8 flex items-center justify-center text-xs text-slate-400">
+                …
+              </span>
+            ) : (
+              <button
+                key={p}
+                type="button"
+                onClick={() => onPageChange(p as number)}
+                className="h-8 w-8 rounded-lg text-xs font-semibold transition-colors"
+                style={p === meta.page ? {
+                  background: 'var(--theme-primary)',
+                  color: '#fff',
+                  border: 'none'
+                } : {
+                  background: 'transparent',
+                  color: '#374151',
+                  border: '1px solid #e5e7eb'
+                }}
+              >
+                {p}
+              </button>
+            )
+          )}
+
+          {/* Next */}
+          <button
+            type="button"
+            className="h-8 w-8 rounded-lg border border-slate-200 text-slate-500 text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 hover:border-slate-300 transition-colors"
+            disabled={meta.page >= meta.totalPages}
+            onClick={() => onPageChange(meta.page + 1)}
+            aria-label="Next page"
+          >
+            ›
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}

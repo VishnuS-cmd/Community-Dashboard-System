@@ -1,0 +1,130 @@
+import { useEffect, useState } from 'react';
+import { Pagination } from '../components/Pagination';
+import { apiRequest } from '../lib/api';
+import { isAdmin } from '../lib/auth';
+import { PaginatedResponse, defaultPaginationMeta, toPaginatedResponse } from '../lib/pagination';
+import { AccessDeniedPage } from './AccessDeniedPage';
+
+export function AuditPage() {
+  // Defense-in-depth: block rendering and API calls before the route guard fires.
+  if (!isAdmin()) {
+    return <AccessDeniedPage />;
+  }
+
+  return <AuditContent />;
+}
+
+/** Inner component — only mounted when isAdmin() is true. */
+function AuditContent() {
+  const [items, setItems] = useState<any[]>([]);
+  const [page, setPage]   = useState(1);
+  const [meta, setMeta]   = useState(defaultPaginationMeta);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    void (async () => {
+      setLoading(true);
+      try {
+        const payload = await apiRequest<PaginatedResponse<any> | any[]>(
+          `/audit-logs?page=${page}&limit=10`
+        );
+        const data = toPaginatedResponse(payload, page);
+        setItems(data.data);
+        setMeta(data.meta);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [page]);
+
+  /** Badge colour by action */
+  function actionBadge(action: string) {
+    const a = (action || '').toLowerCase();
+    if (a === 'create') return 'badge badge-green';
+    if (a === 'update') return 'badge badge-blue';
+    if (a === 'delete') return 'badge badge-red';
+    return 'badge badge-gray';
+  }
+
+  return (
+    <section>
+      {/* ── Header ── */}
+      <div className="mb-6 flex items-start gap-3">
+        <div
+          className="h-10 w-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+          style={{ background: '#eff6ff', border: '1px solid #bfdbfe' }}
+        >
+          🔍
+        </div>
+        <div>
+          <h1 className="text-xl font-bold text-slate-900">Audit Trail</h1>
+          <p className="text-sm text-slate-500">Complete log of all system actions and changes</p>
+        </div>
+      </div>
+
+      {/* ── Table ── */}
+      {loading ? (
+        <div className="flex h-40 items-center justify-center gap-3">
+          <div className="h-7 w-7 animate-spin rounded-full border-[3px] border-blue-500 border-t-transparent" />
+          <span className="text-sm text-slate-500">Loading audit log…</span>
+        </div>
+      ) : items.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-16 gap-3">
+          <span className="text-5xl opacity-25">🔍</span>
+          <p className="text-sm font-medium text-slate-500">No audit entries found.</p>
+          <p className="text-xs text-slate-400">Entries appear when users perform create, update, or delete actions.</p>
+        </div>
+      ) : (
+        <div className="overflow-x-auto rounded-xl border border-slate-200">
+          <table className="ui-table">
+            <thead>
+              <tr>
+                <th>Actor</th>
+                <th>Action</th>
+                <th>Entity</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item) => (
+                <tr key={item.id}>
+                  <td>
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+                        style={{ background: '#6366f1' }}
+                      >
+                        {(item.actor || 'S').charAt(0).toUpperCase()}
+                      </div>
+                      <span className="font-medium text-slate-700">{item.actor ?? '—'}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span className={actionBadge(item.action)}>
+                      {item.action ?? '—'}
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      className="px-2 py-0.5 rounded-md text-xs font-semibold"
+                      style={{ background: '#f1f5f9', color: '#475569' }}
+                    >
+                      {item.entity ?? '—'}
+                    </span>
+                  </td>
+                  <td className="text-slate-500 text-xs whitespace-nowrap">
+                    {item.timestamp
+                      ? new Date(item.timestamp).toLocaleString()
+                      : '—'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <Pagination meta={meta} onPageChange={setPage} />
+    </section>
+  );
+}

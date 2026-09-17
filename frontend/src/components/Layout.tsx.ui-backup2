@@ -1,0 +1,181 @@
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { clearToken } from '../lib/api';
+import { getCurrentUser, getRoleLabel } from '../lib/auth';
+import { projectConfig } from '../project.config';
+
+export function Layout() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentUser = getCurrentUser();
+  const roleLabel = getRoleLabel(currentUser?.roleName ?? null);
+  const isAdmin = currentUser?.roleName === 'admin';
+
+  const logout = () => {
+    clearToken();
+    navigate('/login');
+  };
+
+  // Filter navigation items by the current user's role.
+  const userRole = currentUser?.roleName ?? null;
+  const visibleLinks = (projectConfig.navigationLabels as Array<{
+    to: string;
+    label: string;
+    roles?: string[];
+  }>).filter((link) => {
+    if (!link.roles || link.roles.length === 0) return true;
+    return userRole !== null && link.roles.includes(userRole);
+  });
+
+  return (
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--theme-background)' }}>
+
+      {/* ── Top Header ──────────────────────────────────── */}
+      <header
+        className="sticky top-0 z-30 flex-shrink-0"
+        style={{
+          background: 'var(--theme-sidebar)',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.22)'
+        }}
+      >
+        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-4 py-0" style={{ height: '58px' }}>
+
+          {/* Logo + App name */}
+          <div className="flex items-center gap-3">
+            <div
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-white font-bold text-base flex-shrink-0"
+              style={{ background: 'rgba(255,255,255,0.18)', fontSize: '18px' }}
+              aria-hidden="true"
+            >
+              🤝
+            </div>
+            <div className="leading-tight">
+              <h1 className="text-sm font-bold text-white leading-none tracking-wide">
+                {projectConfig.displayName}
+              </h1>
+              <p className="text-[10px] text-green-200 mt-0.5 font-medium uppercase tracking-widest">
+                Management System
+              </p>
+            </div>
+          </div>
+
+          {/* Right: user badge + logout */}
+          <div className="flex items-center gap-3">
+            {currentUser && (
+              <div className="hidden sm:flex items-center gap-2.5">
+                {/* Avatar */}
+                <div
+                  className="h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+                  style={{ background: 'rgba(255,255,255,0.22)' }}
+                >
+                  {currentUser.displayName?.charAt(0)?.toUpperCase() ?? '?'}
+                </div>
+                <div className="leading-tight text-right">
+                  <p className="text-sm font-semibold text-white leading-none">{currentUser.displayName}</p>
+                  <span
+                    className="inline-block text-[10px] font-bold tracking-widest uppercase rounded-full px-2 py-0.5 mt-0.5"
+                    style={{
+                      background: isAdmin ? 'rgba(251,191,36,0.22)' : 'rgba(255,255,255,0.15)',
+                      color: isAdmin ? '#fef08a' : '#bbf7d0'
+                    }}
+                  >
+                    {roleLabel}
+                  </span>
+                </div>
+              </div>
+            )}
+            <button
+              id="layout-logout-btn"
+              className="ui-btn flex-shrink-0"
+              style={{
+                background: 'rgba(255,255,255,0.14)',
+                color: '#fff',
+                border: '1px solid rgba(255,255,255,0.22)',
+                borderRadius: '8px',
+                padding: '0.35rem 0.9rem',
+                fontSize: '0.8125rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'background .15s ease'
+              }}
+              onClick={logout}
+              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.25)')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.14)')}
+            >
+              Sign out
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* ── Body: sidebar + content ──────────────────────── */}
+      <div className="mx-auto flex w-full max-w-[1400px] flex-1 gap-0 px-4 py-5 md:gap-5">
+
+        {/* Sidebar */}
+        <aside
+          className="hidden md:flex flex-col flex-shrink-0 rounded-xl overflow-hidden"
+          style={{
+            width: '228px',
+            background: '#fff',
+            border: '1px solid #e5e7eb',
+            boxShadow: '0 1px 4px rgba(0,0,0,.06)',
+            height: 'fit-content',
+            position: 'sticky',
+            top: '74px'
+          }}
+        >
+          {/* Nav group label */}
+          <div className="px-4 pt-4 pb-1">
+            <p className="sidebar-nav-group">{(projectConfig as any).theme?.sidebarTitle ?? 'Navigation'}</p>
+          </div>
+
+          <nav className="px-2 pb-3">
+            <ul className="space-y-0.5">
+              {visibleLinks.map((link) => {
+                const active = location.pathname === link.to || location.pathname.startsWith(link.to + '/');
+                return (
+                  <li key={link.to}>
+                    <Link
+                      className="theme-link"
+                      style={active ? {
+                        background: 'color-mix(in srgb, var(--theme-primary) 12%, transparent)',
+                        color: 'var(--theme-primary)',
+                        fontWeight: 600
+                      } : {}}
+                      to={link.to}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          {/* Signed-in user footer */}
+          {currentUser && (
+            <div
+              className="mx-3 mb-3 rounded-lg px-3 py-2.5"
+              style={{ background: '#f0fdf4', border: '1px solid #bbf7d0' }}
+            >
+              <p className="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Signed in as</p>
+              <p className="mt-0.5 text-xs font-semibold text-slate-700 truncate">{currentUser.displayName}</p>
+              <p className="text-[10px] italic text-slate-500">{roleLabel}</p>
+            </div>
+          )}
+        </aside>
+
+        {/* Main content */}
+        <main
+          className="flex-1 min-w-0 rounded-xl p-5 sm:p-6"
+          style={{
+            background: '#fff',
+            border: '1px solid #e5e7eb',
+            boxShadow: '0 1px 4px rgba(0,0,0,.06)'
+          }}
+        >
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
+}

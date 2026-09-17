@@ -1,0 +1,95 @@
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { clearToken } from '../lib/api';
+import { getCurrentUser, getRoleLabel } from '../lib/auth';
+import { projectConfig } from '../project.config';
+
+export function Layout() {
+  const navigate = useNavigate();
+  const currentUser = getCurrentUser();
+  const roleLabel = getRoleLabel(currentUser?.roleName ?? null);
+
+  const logout = () => {
+    clearToken();
+    navigate('/login');
+  };
+
+  // Filter navigation items by the current user's role.
+  // Each entry in projectConfig.navigationLabels carries a `roles` array
+  // (e.g. ["admin", "operator"]) — only show links the current role is allowed.
+  const userRole = currentUser?.roleName ?? null;
+  const visibleLinks = (projectConfig.navigationLabels as Array<{
+    to: string;
+    label: string;
+    roles?: string[];
+  }>).filter((link) => {
+    if (!link.roles || link.roles.length === 0) return true;
+    return userRole !== null && link.roles.includes(userRole);
+  });
+
+  return (
+    <div className="min-h-screen">
+      <header className="bg-[var(--theme-sidebar)] text-white shadow">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+          <h1 className="text-lg font-semibold">{projectConfig.displayName}</h1>
+
+          {/* User info + role badge + logout */}
+          <div className="flex items-center gap-3">
+            {currentUser ? (
+              <div className="hidden sm:flex flex-col items-end leading-tight">
+                <span className="text-sm font-medium">{currentUser.displayName}</span>
+                <span
+                  className="text-xs font-semibold tracking-wide px-2 py-0.5 rounded-full mt-0.5"
+                  style={{
+                    background: 'rgba(255,255,255,0.18)',
+                    color: '#fff'
+                  }}
+                >
+                  {roleLabel}
+                </span>
+              </div>
+            ) : null}
+            <button
+              id="layout-logout-btn"
+              className="rounded bg-accent px-3 py-1 text-sm"
+              onClick={logout}
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 px-4 py-6 md:grid-cols-[240px,1fr]">
+        <nav className="theme-surface border p-4">
+          <p className="mb-3 px-3 text-xs font-semibold uppercase text-slate-500">
+            {projectConfig.theme.sidebarTitle}
+          </p>
+          <ul className="space-y-2 text-sm">
+            {visibleLinks.map((link) => (
+              <li key={link.to}>
+                <Link className="theme-link block rounded px-3 py-2" to={link.to}>
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {/* Role indicator at the bottom of the sidebar */}
+          {currentUser ? (
+            <div className="mt-6 border-t pt-4">
+              <p className="px-3 text-xs text-slate-400">Signed in as</p>
+              <p className="px-3 text-xs font-semibold text-slate-600 truncate mt-0.5">
+                {currentUser.displayName}
+              </p>
+              <p className="px-3 text-xs text-slate-400 mt-0.5 italic">{roleLabel}</p>
+            </div>
+          ) : null}
+        </nav>
+
+        <main className="theme-surface border p-6">
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
+}

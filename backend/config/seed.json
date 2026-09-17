@@ -1,0 +1,485 @@
+{
+  "admin": {
+    "email": "admin@example.com",
+    "password": "Admin@123",
+    "displayName": "System Admin",
+    "role": "admin"
+  },
+  "operator": {
+    "email": "operator@example.com",
+    "password": "Operator@123",
+    "displayName": "System Operator",
+    "role": "operator"
+  },
+  "categories": [
+    "Community Beneficiaries",
+    "Community Volunteers",
+    "Community Donations",
+    "Community Requests",
+    "Community Campaigns"
+  ],
+  "departments": [
+    "NGO Admin",
+    "Volunteer Coordinator",
+    "Donor Manager",
+    "Community Worker"
+  ],
+  "records": [
+    {
+      "title": "Community Donation Request",
+      "description": "Beneficiary Code: CB-2026-0001 | Name: Aarav Sharma | Category: Community Operations | Owner Name: Aarav Sharma",
+      "status": "Active"
+    },
+    {
+      "title": "Community Community Complaint",
+      "description": "Beneficiary Code: CB-2026-0002 | Name: Diya Patel | Category: Community Service | Owner Name: Diya Patel",
+      "status": "Pending Review"
+    },
+    {
+      "title": "Community Awareness Campaign",
+      "description": "Beneficiary Code: CB-2026-0003 | Name: Rohan Mehta | Category: Community Review | Owner Name: Rohan Mehta",
+      "status": "Approved"
+    },
+    {
+      "title": "Community Volunteer Drive",
+      "description": "Beneficiary Code: CB-2026-0004 | Name: Ananya Rao | Category: Community Support | Owner Name: Ananya Rao",
+      "status": "In Progress"
+    },
+    {
+      "title": "Community Donation Request",
+      "description": "Beneficiary Code: CB-2026-0005 | Name: Kabir Singh | Category: Community Operations | Owner Name: Kabir Singh",
+      "status": "Closed"
+    },
+    {
+      "title": "Community Community Complaint",
+      "description": "Beneficiary Code: CB-2026-0006 | Name: Isha Nair | Category: Community Service | Owner Name: Isha Nair",
+      "status": "Escalated"
+    },
+    {
+      "title": "Community Awareness Campaign",
+      "description": "Beneficiary Code: CB-2026-0007 | Name: Arjun Verma | Category: Community Review | Owner Name: Arjun Verma",
+      "status": "Active"
+    },
+    {
+      "title": "Community Volunteer Drive",
+      "description": "Beneficiary Code: CB-2026-0008 | Name: Meera Iyer | Category: Community Support | Owner Name: Meera Iyer",
+      "status": "Pending Review"
+    },
+    {
+      "title": "Community Donation Request",
+      "description": "Beneficiary Code: CB-2026-0009 | Name: Vivaan Joshi | Category: Community Operations | Owner Name: Vivaan Joshi",
+      "status": "Approved"
+    },
+    {
+      "title": "Community Community Complaint",
+      "description": "Beneficiary Code: CB-2026-0010 | Name: Sara Khan | Category: Community Service | Owner Name: Sara Khan",
+      "status": "In Progress"
+    }
+  ],
+  "transactions": [
+    {
+      "type": "Register Volunteer",
+      "amount": 100,
+      "note": "Register Volunteer for community dashboard with clear steps, ownership, and audit-ready status updates."
+    },
+    {
+      "type": "Record Donation",
+      "amount": 200,
+      "note": "Record Donation for community dashboard with clear steps, ownership, and audit-ready status updates."
+    },
+    {
+      "type": "Resolve Community Request",
+      "amount": 300,
+      "note": "Resolve Community Request for community dashboard with clear steps, ownership, and audit-ready status updates."
+    }
+  ],
+  "domainEntities": [
+    {
+      "name": "CommunityBeneficiary",
+      "plural": "Community Beneficiaries",
+      "route": "/community-beneficiaries",
+      "seed": [
+        {
+          "beneficiaryCode": "CB-2026-0001",
+          "name": "Aarav Sharma",
+          "category": "Community Operations",
+          "ownerName": "Aarav Sharma",
+          "status": "Active",
+          "needType": "Community Operations",
+          "location": "Pune",
+          "title": "Community Donation Request"
+        },
+        {
+          "beneficiaryCode": "CB-2026-0002",
+          "name": "Diya Patel",
+          "category": "Community Service",
+          "ownerName": "Diya Patel",
+          "status": "Pending Review",
+          "needType": "Community Service",
+          "location": "Mumbai",
+          "title": "Community Community Complaint"
+        },
+        {
+          "beneficiaryCode": "CB-2026-0003",
+          "name": "Rohan Mehta",
+          "category": "Community Review",
+          "ownerName": "Rohan Mehta",
+          "status": "Approved",
+          "needType": "Community Review",
+          "location": "Bengaluru",
+          "title": "Community Awareness Campaign"
+        },
+        {
+          "beneficiaryCode": "CB-2026-0004",
+          "name": "Ananya Rao",
+          "category": "Community Support",
+          "ownerName": "Ananya Rao",
+          "status": "In Progress",
+          "needType": "Community Support",
+          "location": "Hyderabad",
+          "title": "Community Volunteer Drive"
+        },
+        {
+          "beneficiaryCode": "CB-2026-0005",
+          "name": "Kabir Singh",
+          "category": "Community Operations",
+          "ownerName": "Kabir Singh",
+          "status": "Closed",
+          "needType": "Community Operations",
+          "location": "Ahmedabad",
+          "title": "Community Donation Request"
+        },
+        {
+          "beneficiaryCode": "CB-2026-0006",
+          "name": "Isha Nair",
+          "category": "Community Service",
+          "ownerName": "Isha Nair",
+          "status": "Escalated",
+          "needType": "Community Service",
+          "location": "Jaipur",
+          "title": "Community Community Complaint"
+        },
+        {
+          "beneficiaryCode": "CB-2026-0007",
+          "name": "Arjun Verma",
+          "category": "Community Review",
+          "ownerName": "Arjun Verma",
+          "status": "Active",
+          "needType": "Community Review",
+          "location": "Chennai",
+          "title": "Community Awareness Campaign"
+        },
+        {
+          "beneficiaryCode": "CB-2026-0008",
+          "name": "Meera Iyer",
+          "category": "Community Support",
+          "ownerName": "Meera Iyer",
+          "status": "Pending Review",
+          "needType": "Community Support",
+          "location": "Kochi",
+          "title": "Community Volunteer Drive"
+        },
+        {
+          "beneficiaryCode": "CB-2026-0009",
+          "name": "Vivaan Joshi",
+          "category": "Community Operations",
+          "ownerName": "Vivaan Joshi",
+          "status": "Approved",
+          "needType": "Community Operations",
+          "location": "Indore",
+          "title": "Community Donation Request"
+        },
+        {
+          "beneficiaryCode": "CB-2026-0010",
+          "name": "Sara Khan",
+          "category": "Community Service",
+          "ownerName": "Sara Khan",
+          "status": "In Progress",
+          "needType": "Community Service",
+          "location": "Lucknow",
+          "title": "Community Community Complaint"
+        }
+      ]
+    },
+    {
+      "name": "CommunityVolunteer",
+      "plural": "Community Volunteers",
+      "route": "/community-volunteers",
+      "seed": [
+        {
+          "volunteerCode": "CV-2026-0001",
+          "name": "Aarav Sharma",
+          "category": "Community Operations",
+          "ownerName": "Aarav Sharma",
+          "status": "Active",
+          "skill": "Northstar Operations Community Volunteer 1",
+          "availability": "Active",
+          "title": "Community Donation Request"
+        },
+        {
+          "volunteerCode": "CV-2026-0002",
+          "name": "Diya Patel",
+          "category": "Community Service",
+          "ownerName": "Diya Patel",
+          "status": "Pending Review",
+          "skill": "Greenfield Services Community Volunteer 2",
+          "availability": "Pending Review",
+          "title": "Community Community Complaint"
+        },
+        {
+          "volunteerCode": "CV-2026-0003",
+          "name": "Rohan Mehta",
+          "category": "Community Review",
+          "ownerName": "Rohan Mehta",
+          "status": "Approved",
+          "skill": "BluePeak Solutions Community Volunteer 3",
+          "availability": "Approved",
+          "title": "Community Awareness Campaign"
+        },
+        {
+          "volunteerCode": "CV-2026-0004",
+          "name": "Ananya Rao",
+          "category": "Community Support",
+          "ownerName": "Ananya Rao",
+          "status": "In Progress",
+          "skill": "MetroCare Group Community Volunteer 4",
+          "availability": "In Progress",
+          "title": "Community Volunteer Drive"
+        },
+        {
+          "volunteerCode": "CV-2026-0005",
+          "name": "Kabir Singh",
+          "category": "Community Operations",
+          "ownerName": "Kabir Singh",
+          "status": "Closed",
+          "skill": "Sunrise Associates Community Volunteer 5",
+          "availability": "Closed",
+          "title": "Community Donation Request"
+        },
+        {
+          "volunteerCode": "CV-2026-0006",
+          "name": "Isha Nair",
+          "category": "Community Service",
+          "ownerName": "Isha Nair",
+          "status": "Escalated",
+          "skill": "Vertex Admin Office Community Volunteer 6",
+          "availability": "Escalated",
+          "title": "Community Community Complaint"
+        }
+      ]
+    },
+    {
+      "name": "CommunityDonation",
+      "plural": "Community Donations",
+      "route": "/community-donations",
+      "seed": [
+        {
+          "donationCode": "CD-2026-0001",
+          "name": "Aarav Sharma",
+          "category": "Community Operations",
+          "ownerName": "Aarav Sharma",
+          "status": "Active",
+          "donationNo": "CD-2026-0001",
+          "donorName": "Aarav Sharma",
+          "amount": 1250,
+          "title": "Community Donation Request"
+        },
+        {
+          "donationCode": "CD-2026-0002",
+          "name": "Diya Patel",
+          "category": "Community Service",
+          "ownerName": "Diya Patel",
+          "status": "Pending Review",
+          "donationNo": "CD-2026-0002",
+          "donorName": "Diya Patel",
+          "amount": 2500,
+          "title": "Community Community Complaint"
+        },
+        {
+          "donationCode": "CD-2026-0003",
+          "name": "Rohan Mehta",
+          "category": "Community Review",
+          "ownerName": "Rohan Mehta",
+          "status": "Approved",
+          "donationNo": "CD-2026-0003",
+          "donorName": "Rohan Mehta",
+          "amount": 3750,
+          "title": "Community Awareness Campaign"
+        },
+        {
+          "donationCode": "CD-2026-0004",
+          "name": "Ananya Rao",
+          "category": "Community Support",
+          "ownerName": "Ananya Rao",
+          "status": "In Progress",
+          "donationNo": "CD-2026-0004",
+          "donorName": "Ananya Rao",
+          "amount": 5000,
+          "title": "Community Volunteer Drive"
+        },
+        {
+          "donationCode": "CD-2026-0005",
+          "name": "Kabir Singh",
+          "category": "Community Operations",
+          "ownerName": "Kabir Singh",
+          "status": "Closed",
+          "donationNo": "CD-2026-0005",
+          "donorName": "Kabir Singh",
+          "amount": 6250,
+          "title": "Community Donation Request"
+        },
+        {
+          "donationCode": "CD-2026-0006",
+          "name": "Isha Nair",
+          "category": "Community Service",
+          "ownerName": "Isha Nair",
+          "status": "Escalated",
+          "donationNo": "CD-2026-0006",
+          "donorName": "Isha Nair",
+          "amount": 7500,
+          "title": "Community Community Complaint"
+        }
+      ]
+    },
+    {
+      "name": "CommunityRequest",
+      "plural": "Community Requests",
+      "route": "/community-requests",
+      "seed": [
+        {
+          "requestCode": "CR-2026-0001",
+          "name": "Aarav Sharma",
+          "category": "Community Operations",
+          "ownerName": "Aarav Sharma",
+          "status": "Active",
+          "requestNo": "CR-2026-0001",
+          "requestType": "Community Operations",
+          "priority": "High",
+          "title": "Community Donation Request"
+        },
+        {
+          "requestCode": "CR-2026-0002",
+          "name": "Diya Patel",
+          "category": "Community Service",
+          "ownerName": "Diya Patel",
+          "status": "Pending Review",
+          "requestNo": "CR-2026-0002",
+          "requestType": "Community Service",
+          "priority": "Medium",
+          "title": "Community Community Complaint"
+        },
+        {
+          "requestCode": "CR-2026-0003",
+          "name": "Rohan Mehta",
+          "category": "Community Review",
+          "ownerName": "Rohan Mehta",
+          "status": "Approved",
+          "requestNo": "CR-2026-0003",
+          "requestType": "Community Review",
+          "priority": "Low",
+          "title": "Community Awareness Campaign"
+        },
+        {
+          "requestCode": "CR-2026-0004",
+          "name": "Ananya Rao",
+          "category": "Community Support",
+          "ownerName": "Ananya Rao",
+          "status": "In Progress",
+          "requestNo": "CR-2026-0004",
+          "requestType": "Community Support",
+          "priority": "Critical",
+          "title": "Community Volunteer Drive"
+        },
+        {
+          "requestCode": "CR-2026-0005",
+          "name": "Kabir Singh",
+          "category": "Community Operations",
+          "ownerName": "Kabir Singh",
+          "status": "Closed",
+          "requestNo": "CR-2026-0005",
+          "requestType": "Community Operations",
+          "priority": "High",
+          "title": "Community Donation Request"
+        },
+        {
+          "requestCode": "CR-2026-0006",
+          "name": "Isha Nair",
+          "category": "Community Service",
+          "ownerName": "Isha Nair",
+          "status": "Escalated",
+          "requestNo": "CR-2026-0006",
+          "requestType": "Community Service",
+          "priority": "Medium",
+          "title": "Community Community Complaint"
+        }
+      ]
+    },
+    {
+      "name": "CommunityCampaign",
+      "plural": "Community Campaigns",
+      "route": "/community-campaigns",
+      "seed": [
+        {
+          "campaignCode": "CC-2026-0001",
+          "name": "Aarav Sharma",
+          "category": "Community Operations",
+          "ownerName": "Aarav Sharma",
+          "status": "Active",
+          "targetAmount": 1250,
+          "impactCount": 14,
+          "title": "Community Donation Request"
+        },
+        {
+          "campaignCode": "CC-2026-0002",
+          "name": "Diya Patel",
+          "category": "Community Service",
+          "ownerName": "Diya Patel",
+          "status": "Pending Review",
+          "targetAmount": 2500,
+          "impactCount": 21,
+          "title": "Community Community Complaint"
+        },
+        {
+          "campaignCode": "CC-2026-0003",
+          "name": "Rohan Mehta",
+          "category": "Community Review",
+          "ownerName": "Rohan Mehta",
+          "status": "Approved",
+          "targetAmount": 3750,
+          "impactCount": 28,
+          "title": "Community Awareness Campaign"
+        },
+        {
+          "campaignCode": "CC-2026-0004",
+          "name": "Ananya Rao",
+          "category": "Community Support",
+          "ownerName": "Ananya Rao",
+          "status": "In Progress",
+          "targetAmount": 5000,
+          "impactCount": 35,
+          "title": "Community Volunteer Drive"
+        },
+        {
+          "campaignCode": "CC-2026-0005",
+          "name": "Kabir Singh",
+          "category": "Community Operations",
+          "ownerName": "Kabir Singh",
+          "status": "Closed",
+          "targetAmount": 6250,
+          "impactCount": 42,
+          "title": "Community Donation Request"
+        },
+        {
+          "campaignCode": "CC-2026-0006",
+          "name": "Isha Nair",
+          "category": "Community Service",
+          "ownerName": "Isha Nair",
+          "status": "Escalated",
+          "targetAmount": 7500,
+          "impactCount": 49,
+          "title": "Community Community Complaint"
+        }
+      ]
+    }
+  ]
+}

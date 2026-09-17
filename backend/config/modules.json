@@ -1,0 +1,12 @@
+{
+  "modules": [
+    "records",
+    "categories",
+    "departments",
+    "transactions",
+    "reports",
+    "dashboard",
+    "export-csv",
+    "audit-log"
+  ]
+}

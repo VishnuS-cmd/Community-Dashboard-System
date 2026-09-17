@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.npm-cache/
+.env
+data/
+*.log
+.DS_Store
+target/
+*.class
+*.jar
+.idea/
+.vscode/

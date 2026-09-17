@@ -1,0 +1,91 @@
+import { useNavigate } from 'react-router-dom';
+import { getCurrentUser, getRoleLabel } from '../lib/auth';
+
+/**
+ * AccessDeniedPage — shown when an authenticated user navigates to a route
+ * or triggers an API call they are not authorised to access.
+ */
+export function AccessDeniedPage() {
+  const navigate = useNavigate();
+  const user = getCurrentUser();
+  const roleLabel = getRoleLabel(user?.roleName ?? null);
+
+  return (
+    <div className="flex min-h-[72vh] flex-col items-center justify-center px-6 text-center">
+
+      {/* Lock illustration */}
+      <div className="relative mb-8">
+        <div
+          className="h-28 w-28 rounded-full flex items-center justify-center mx-auto"
+          style={{ background: 'linear-gradient(135deg, #fee2e2, #fecaca)' }}
+        >
+          <div
+            className="h-20 w-20 rounded-full flex items-center justify-center text-5xl"
+            style={{ background: '#fff', boxShadow: '0 4px 20px rgba(220,38,38,0.2)' }}
+          >
+            🔒
+          </div>
+        </div>
+        {/* Decorative rings */}
+        <div
+          className="absolute inset-0 rounded-full animate-ping opacity-10"
+          style={{ background: '#dc2626', animationDuration: '2s' }}
+        />
+      </div>
+
+      {/* Content */}
+      <div
+        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-4"
+        style={{ background: '#fef2f2', color: '#b91c1c', border: '1px solid #fecaca' }}
+      >
+        403 — Access Denied
+      </div>
+
+      <h1 className="text-3xl font-bold text-slate-900 max-w-md">
+        You don't have permission to view this page
+      </h1>
+
+      <p className="mt-4 max-w-sm text-base text-slate-500 leading-relaxed">
+        This section is restricted to{' '}
+        <strong className="text-slate-700">Administrators</strong> only.
+        {user && (
+          <>
+            {' '}You are signed in as{' '}
+            <strong className="text-slate-700">{user.displayName}</strong>{' '}
+            (
+            <span
+              className="inline-block px-2 py-0.5 rounded-full text-xs font-semibold"
+              style={{ background: '#f0fdf4', color: '#15803d' }}
+            >
+              {roleLabel}
+            </span>
+            ).
+          </>
+        )}
+      </p>
+
+      {/* Action buttons */}
+      <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+        <button
+          id="access-denied-dashboard-btn"
+          className="ui-btn ui-btn-primary px-6 py-2.5"
+          onClick={() => navigate('/dashboard')}
+        >
+          Go to Dashboard
+        </button>
+        <button
+          id="access-denied-back-btn"
+          className="ui-btn ui-btn-ghost px-6 py-2.5"
+          onClick={() => navigate(-1)}
+        >
+          Go Back
+        </button>
+      </div>
+
+      {/* Help text */}
+      <p className="mt-8 text-xs text-slate-400">
+        If you believe this is a mistake, contact your system administrator.
+      </p>
+    </div>
+  );
+}

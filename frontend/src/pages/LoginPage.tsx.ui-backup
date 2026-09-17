@@ -1,0 +1,91 @@
+import { FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { apiRequest, setToken, setCurrentUser } from '../lib/api';
+import type { CurrentUser } from '../lib/auth';
+import { projectConfig } from '../project.config';
+import { DomainVector } from '../theme/vectors';
+
+interface LoginResponse {
+  accessToken: string;
+  user: CurrentUser & { roleName: string };
+}
+
+export function LoginPage() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('admin@example.com');
+  const [password, setPassword] = useState('Admin@123');
+  const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
+
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    setError('');
+    setBusy(true);
+    try {
+      const response = await apiRequest<LoginResponse>('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password })
+      });
+      // Persist token and the resolved user object (including roleName) so that
+      // role-guard helpers in lib/auth.ts can read it without decoding the JWT.
+      setToken(response.accessToken);
+      setCurrentUser(response.user);
+      navigate('/dashboard');
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Login failed');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="grid min-h-screen items-center gap-8 p-6 lg:grid-cols-[1fr,460px]">
+      <section className="mx-auto hidden max-w-2xl lg:block">
+        <DomainVector className="w-full drop-shadow-sm" />
+        <h1 className="mt-6 text-4xl font-bold text-slate-950">{projectConfig.displayName}</h1>
+        <p className="mt-3 text-base text-slate-600">{projectConfig.recordPage.intro}</p>
+      </section>
+      <form className="theme-surface mx-auto w-full max-w-md border p-6 shadow" onSubmit={handleSubmit}>
+        <h2 className="mb-4 text-2xl font-bold">Demo Login</h2>
+        <div className="mb-4 rounded border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
+          <p className="font-semibold text-slate-700">Demo credentials</p>
+          <p className="mt-1">
+            <span className="font-medium">Administrator:</span>{' '}
+            admin@example.com / Admin@123
+          </p>
+          <p className="mt-0.5">
+            <span className="font-medium">Operator:</span>{' '}
+            operator@example.com / Operator@123
+          </p>
+        </div>
+        <label className="mb-3 block text-sm">
+          Email
+          <input
+            id="login-email"
+            className="mt-1 w-full rounded border px-3 py-2"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        </label>
+        <label className="mb-3 block text-sm">
+          Password
+          <input
+            id="login-password"
+            className="mt-1 w-full rounded border px-3 py-2"
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </label>
+        {error ? <p className="mb-3 text-sm text-red-600">{error}</p> : null}
+        <button
+          id="login-submit-btn"
+          className="w-full rounded bg-primary px-4 py-2 text-white"
+          disabled={busy}
+        >
+          {busy ? 'Signing in...' : 'Sign in'}
+        </button>
+      </form>
+    </div>
+  );
+}

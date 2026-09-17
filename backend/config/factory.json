@@ -1,0 +1,29 @@
+{
+  "projectName": "community-dashboard-management-system",
+  "template": "management",
+  "projectCategory": {
+    "id": "web",
+    "displayName": "Web Application",
+    "description": "Browser-based projects with frontend, backend APIs, database, Docker, documentation, and screenshots."
+  },
+  "stack": {
+    "id": "react-springboot",
+    "displayName": "React + Spring Boot",
+    "frontend": "react",
+    "backend": "springboot",
+    "starter": "react-springboot-starter",
+    "status": "implemented"
+  },
+  "database": {
+    "id": "mysql",
+    "displayName": "MySQL",
+    "typeormType": "mysql",
+    "driverPackage": "mysql2",
+    "dockerService": "mysql",
+    "dockerImage": "mysql:8.4",
+    "defaultPort": 3306,
+    "hostPort": 53306,
+    "status": "implemented"
+  },
+  "generatedAt": "2026-04-27T02:53:26.532Z"
+}
